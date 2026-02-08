@@ -1,77 +1,116 @@
 
+# Refonte Style Flôr Porto - Imitation Fidèle
 
-# Lyte Food — Site Web Restaurant (Style Flôr Porto)
+## Analyse des Captures d'écran Flôr
 
-## Vision
-Un site élégant et minimaliste inspiré de florporto.com, adapté pour Lyte Food avec ses couleurs chaudes (Brun Expresso, Crème de Lait, Or Ambré, Terre Cuite) et un panier e-commerce fonctionnel mais discret, parfaitement intégré au design éditorial.
+D'après les captures fournies, voici les éléments clés du design Flôr Porto à reproduire :
 
----
+### 1. Hero Section (Capture 1)
+- Fond flouté/dégradé beige-gris doux qui occupe tout l'écran
+- Image centrale rectangulaire avec coins arrondis (pas plein écran)
+- Logo "flôr" en overlay blanc sur l'image centrale
+- Texte "LOCAL TIME AT FLÔR: 7:34 PM" au-dessus de l'image
+- Sous-titre en bas : "coffee · wine · cocktails" en texte fin espacé
 
-## Identité Visuelle
-- **Palette** : Brun Expresso (#3D2317), Crème de Lait (#F9F4F0), Or Ambré (#C28E40), Terre Cuite (#A6442E)
-- **Typographies** : Playfair Display (titres), Montserrat (corps), Dancing Script (accents)
-- **Style** : Minimaliste, aéré, éditorial — fidèle à l'esprit Flôr Porto
+### 2. Section Éditoriale (Capture 2)
+- Grande phrase poétique en typographie serif : "coffee and pastries by morning. snacks and cocktails as the day flows."
+- Lien minimaliste "make a reservation" en dessous
+- Timeline verticale à droite avec indicateur "morning" et ligne verticale
+- Icônes soleil/lune pour indiquer le moment de la journée
 
----
-
-## Structure du Site (5 pages + composants)
-
-### 🔝 Header (toutes les pages)
-- Barre d'annonce sombre : "📍 Ouvert à Ste Rita & Avotrou — Commandez en ligne"
-- Logo "Lyte Food" centré
-- Navigation gauche : La Carte, Réserver
-- Actions droite : Recherche, Panier (badge dynamique)
-- Sticky au scroll, animations de soulignement au survol
-
-### 🏠 Page 1 : Accueil (Home)
-- **Hero** : Grande image/fond flouté style Flôr avec photo centrale, logo overlay, et sous-titre "coffee shop · restaurant · terrasse"
-- **Section éditoriale** : Texte d'accroche poétique + CTA "Commander en ligne" et "Réserver une table"
-- **Timeline du jour** (style Flôr) : Sections Morning/Afternoon/Evening avec photos et descriptions pour Coffee Shop, Restaurant, Terrasse — chacune avec un lien "voir le menu"
-- **Best-sellers** : Carousel horizontal de 4 produits phares avec ajout rapide au panier
-- **Localisations** : 2 blocs Ste Rita & Avotrou avec horaires et bouton Maps
-- **Avis clients** : Slider horizontal avec 3 témoignages étoilés
-- **Partenaires** : Ligne de logos grisés
-
-### 📋 Page 2 : La Carte (Catalogue)
-- Barre de catégories flottante : Coffee Shop, Bouillies, Fast-Food, Plats, Grillades, Jus & Thés
-- Grille de produits par section avec photo, nom, prix, bouton "+" discret
-- Pop-up fiche produit au clic : image agrandie, options de personnalisation (accompagnement, taille, sauce), bouton "Ajouter au panier"
-- Badges "Signature Lyte" et "Populaire" sur certains produits
-- FAQ en accordéon en bas de page
-
-### 🏡 Page 3 : Nos Espaces
-- Hero split en 2 colonnes : Ste Rita vs Avotrou
-- Section détaillée pour chaque lieu (description, services, galerie photos)
-- Formulaire de réservation : Lieu, nombre de personnes, date/heure, occasion
-- Google Maps intégré stylisé
-
-### 🛒 Panier (Tiroir latéral)
-- S'ouvre en slide depuis la droite sans changer de page
-- Vignettes produits, sélecteur de quantité, prix en temps réel
-- Bouton "Retour" + Bouton "Payer" (vers checkout)
-
-### 💳 Page 4 : Checkout (Validation)
-- Page épurée 2 colonnes : coordonnées (nom, téléphone WhatsApp, mode livraison/retrait, adresse) + récapitulatif commande
-- Champ note : "Une préférence particulière ?"
-- Bouton final Terre Cuite : "Valider ma commande — From Lyte with Love ❤️"
-
-### ✅ Page 5 : Confirmation (Success)
-- Message de remerciement personnalisé avec prénom
-- Animation de confetti (grains de café stylisés)
-- Boutons : "Suivre sur WhatsApp" + "Retour à l'accueil"
-
-### 🦶 Footer (toutes les pages)
-- Fond Brun Expresso, texte Crème de Lait
-- 4 sections : Identité & slogan, Liens rapides, Contact & horaires des 2 sites, Réseaux sociaux
-- Bouton "Retour en haut" après 500px de scroll
+### 3. Timeline Produits (Captures 2 & 3)
+- Layout alterné : image à gauche + texte à droite, puis inversé
+- Images rectangulaires verticales avec coins arrondis
+- Titre simple en minuscules : "coffee", "wine", "cocktails"
+- Horaire : "from 10:00" ou "served all day"
+- Description poétique en paragraphe
+- Lien minimaliste : "view our coffee menu"
 
 ---
 
-## Fonctionnalités Clés
-- **Panier fonctionnel** côté client (state React) — pas de backend, c'est un prototype/démo
-- **Images générées par IA** pour les plats, boissons et espaces
-- **Animations douces** : fade-in au scroll, survols élégants, transition du panier
-- **Micro-interactions** : badge panier qui rebondit, bouton "Ajouter" avec check, skeleton loading
-- **100% responsive** : mobile-first comme florporto.com
-- **Note de prototype** discrète sur la page de checkout
+## Modifications à Apporter
 
+### Header
+- Supprimer la barre d'annonce sombre
+- Header transparent/léger sur fond clair
+- Logo "Lyte Food" à gauche (style manuscrit comme flôr)
+- Droite : "FR / EN" + "réserver" + icône menu hamburger
+- Pas de panier visible dans le header principal (le mettre ailleurs)
+
+### Hero Section (Refonte complète)
+- Fond : dégradé flouté beige/crème
+- Image centrale : format portrait, coins arrondis, avec overlay du logo "Lyte Food" en blanc
+- Au-dessus de l'image : "HEURE LOCALE À LYTE: [heure actuelle]"
+- En dessous : "coffee shop · restaurant · terrasse" en texte espacé fin
+
+### Section Éditoriale (Nouvelle)
+- Grande phrase poétique multiligne en Playfair Display :
+  "bouillies et café le matin. burgers et salades au fil du jour. grillades sous les étoiles."
+- Lien : "réserver une table"
+
+### Timeline Section (Refonte)
+- Ajouter la barre verticale de timeline à droite avec indicateurs (morning/afternoon/evening)
+- Icônes soleil/lune
+- Layout alterné fidèle au modèle :
+  - **Morning** : Image gauche + "Le Coffee Shop" / "dès 07h00" / description / "voir le menu café"
+  - **Afternoon** : "Le Restaurant" droite + Image gauche / "dès 12h00" / description / "voir le menu"
+  - **Evening** : Image gauche + "La Terrasse" / "dès 18h00" / description / "voir la carte grillades"
+
+### Sections Suivantes
+- Garder Best-sellers, Locations, Reviews mais les épurer davantage pour coller au style minimaliste
+- Réduire les décorations et badges
+
+---
+
+## Structure des Fichiers à Modifier
+
+1. **src/components/layout/Header.tsx** - Refonte complète style Flôr
+2. **src/components/home/HeroSection.tsx** - Fond flouté + image centrale avec logo overlay
+3. **src/components/home/EditorialSection.tsx** (nouveau) - Grande phrase poétique
+4. **src/components/home/TimelineSection.tsx** - Ajout timeline verticale droite + layout exact
+5. **src/pages/Index.tsx** - Intégrer la nouvelle section éditoriale
+6. **src/index.css** - Styles CSS pour le fond flouté et la timeline
+
+---
+
+## Détails Techniques
+
+### Fond Flouté Hero
+```text
+- Utiliser un dégradé radial CSS : radial-gradient(ellipse at center, #e8e0d8 0%, #d4ccc4 50%, #c8beb4 100%)
+- Appliquer un léger blur sur le background
+- L'image centrale sera en position: relative avec z-index supérieur
+```
+
+### Timeline Verticale
+```text
+- Positionnée à droite de la section (position: fixed ou sticky)
+- Ligne verticale fine (1px) avec des points indicateurs
+- Labels : "morning", "afternoon", "evening"
+- Icônes : Sun (soleil) et Moon (lune) de lucide-react
+```
+
+### Image Centrale Hero
+```text
+- Format portrait (aspect-ratio: 3/4)
+- Coins arrondis (border-radius: 8px)
+- Ombre subtile
+- Logo "Lyte Food" superposé en blanc au centre
+```
+
+---
+
+## Textes Adaptés pour Lyte Food
+
+### Hero
+- "HEURE LOCALE À LYTE: [heure dynamique]"
+- Sous-titre : "coffee shop · restaurant · terrasse"
+
+### Section Éditoriale
+- "bouillies et café le matin. burgers et salades au fil du jour. grillades sous les étoiles."
+- Lien : "réserver une table"
+
+### Timeline
+- **Coffee Shop** : "dès 07h00" - "Commencez la journée avec nos cafés de spécialité et bouillies traditionnelles. Douceur et saveur, préparés avec soin."
+- **Restaurant** : "dès 12h00" - "Burgers juteux, salades fraîches et l'incontournable Atassi. Une cuisine généreuse qui nourrit le corps et l'âme."
+- **Terrasse** : "dès 18h00" - "Quand le soir s'installe, les grillades prennent le relais. Brochettes parfumées, jus frais et ambiance décontractée."
