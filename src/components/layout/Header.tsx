@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { totalItems, openCart } = useCart();
+  const { openCart } = useCart();
   const location = useLocation();
 
   useEffect(() => {
@@ -18,74 +18,84 @@ const Header = () => {
   useEffect(() => setMobileOpen(false), [location]);
 
   return (
-    <>
-      {/* Announcement Bar */}
-      <div className="bg-primary text-primary-foreground text-xs md:text-sm text-center py-2 px-4 font-body">
-        📍 Ouvert à Ste Rita & Avotrou — Commandez en ligne dès maintenant
-      </div>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-background/90 backdrop-blur-md' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="flex items-center justify-between h-20 md:h-24">
+          {/* Logo - Left */}
+          <Link to="/" className="group">
+            <span className="font-script text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors">
+              lyte food
+            </span>
+          </Link>
 
-      {/* Main Header */}
-      <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-md shadow-sm' : 'bg-background'}`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Left Nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              <Link to="/carte" className="text-sm font-medium tracking-wide uppercase text-foreground hover:text-accent transition-colors relative group">
-                La Carte
-                <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 group-hover:w-full" />
-              </Link>
-              <Link to="/espaces" className="text-sm font-medium tracking-wide uppercase text-foreground hover:text-accent transition-colors relative group">
-                Réserver
-                <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 group-hover:w-full" />
-              </Link>
-            </nav>
-
-            {/* Mobile menu button */}
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-foreground" aria-label="Menu">
-              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {/* Right Actions */}
+          <div className="flex items-center gap-6 md:gap-8">
+            {/* Language */}
+            <button className="hidden md:block text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+              FR / EN
             </button>
 
-            {/* Logo */}
-            <Link to="/" className="absolute left-1/2 -translate-x-1/2">
-              <div className="text-center">
-                <h1 className="text-xl md:text-2xl font-display font-bold tracking-wider text-foreground">
-                  LYTE FOOD
-                </h1>
-                <p className="text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-muted-foreground font-body">
-                  coffee shop · restaurant · terrasse
-                </p>
-              </div>
+            {/* Réserver Link */}
+            <Link 
+              to="/espaces" 
+              className="hidden md:block text-xs tracking-[0.2em] uppercase text-foreground hover:text-accent transition-colors"
+            >
+              réserver
             </Link>
 
-            {/* Right Actions */}
-            <div className="flex items-center gap-4">
-              <button className="hidden md:block text-foreground hover:text-accent transition-colors" aria-label="Rechercher">
-                <Search size={20} />
-              </button>
-              <button onClick={openCart} className="relative text-foreground hover:text-accent transition-colors" aria-label="Panier">
-                <ShoppingBag size={20} />
-                {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-cta text-cta-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center animate-bounce-subtle">
-                    {totalItems}
-                  </span>
-                )}
-              </button>
-            </div>
+            {/* Cart (subtle) */}
+            <button 
+              onClick={openCart}
+              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
+            >
+              panier
+            </button>
+
+            {/* Mobile menu button */}
+            <button 
+              onClick={() => setMobileOpen(!mobileOpen)} 
+              className="text-foreground hover:text-accent transition-colors"
+              aria-label="Menu"
+            >
+              {mobileOpen ? <X size={24} strokeWidth={1} /> : <Menu size={24} strokeWidth={1} />}
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Nav */}
-        {mobileOpen && (
-          <div className="md:hidden bg-background border-t border-border animate-fade-in">
-            <nav className="flex flex-col py-4 px-6 gap-4">
-              <Link to="/carte" className="text-sm font-medium tracking-wide uppercase text-foreground py-2">La Carte</Link>
-              <Link to="/espaces" className="text-sm font-medium tracking-wide uppercase text-foreground py-2">Nos Espaces</Link>
-              <Link to="/espaces" className="text-sm font-medium tracking-wide uppercase text-foreground py-2">Réserver</Link>
-            </nav>
-          </div>
-        )}
-      </header>
-    </>
+      {/* Full-screen Mobile/Desktop Nav Overlay */}
+      <div className={`fixed inset-0 bg-background z-40 transition-all duration-500 ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="flex flex-col items-center justify-center h-full gap-8">
+          <Link 
+            to="/carte" 
+            onClick={() => setMobileOpen(false)}
+            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
+          >
+            la carte
+          </Link>
+          <Link 
+            to="/espaces" 
+            onClick={() => setMobileOpen(false)}
+            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
+          >
+            nos espaces
+          </Link>
+          <Link 
+            to="/espaces" 
+            onClick={() => setMobileOpen(false)}
+            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
+          >
+            réserver
+          </Link>
+          <button 
+            onClick={() => { openCart(); setMobileOpen(false); }}
+            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
+          >
+            panier
+          </button>
+        </div>
+      </div>
+    </header>
   );
 };
 

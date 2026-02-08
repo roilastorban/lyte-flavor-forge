@@ -1,45 +1,56 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import heroImage from '@/assets/hero-image.jpg';
 
 const HeroSection = () => {
-  return (
-    <section className="relative min-h-[85vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <img src={heroImage} alt="Lyte Food ambiance" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-foreground/50" />
-      </div>
+  const [time, setTime] = useState('');
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-        <p className="font-script text-accent text-xl md:text-2xl mb-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          coffee shop · restaurant · terrasse
-        </p>
-        <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-primary-foreground leading-tight animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-          Savourez l'instant
-        </h1>
-        <p className="text-primary-foreground/80 text-base md:text-lg mt-6 font-body leading-relaxed animate-fade-in-up max-w-xl mx-auto" style={{ animationDelay: '0.6s' }}>
-          Une cuisine saine, naturelle et conviviale servie avec amour à Ste Rita et Avotrou.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-          <Link
-            to="/carte"
-            className="px-8 py-3.5 bg-cta text-cta-foreground text-sm font-medium tracking-wide uppercase rounded hover:opacity-90 transition-opacity"
-          >
-            Commander en ligne
-          </Link>
-          <Link
-            to="/espaces"
-            className="px-8 py-3.5 border border-accent text-accent text-sm font-medium tracking-wide uppercase rounded hover:bg-accent hover:text-accent-foreground transition-all"
-          >
-            Réserver une table
-          </Link>
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      setTime(`${hours}:${minutes}`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden hero-gradient">
+      {/* Local Time */}
+      <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8 animate-fade-in">
+        heure locale à lyte: {time}
+      </p>
+
+      {/* Central Image with Logo Overlay */}
+      <div className="relative w-[280px] md:w-[320px] lg:w-[360px] animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-2xl">
+          <img 
+            src={heroImage} 
+            alt="Lyte Food ambiance" 
+            className="w-full h-full object-cover"
+          />
+          {/* Logo Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-foreground/20">
+            <h1 className="font-script text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-lg">
+              lyte food
+            </h1>
+          </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <div className="w-[1px] h-12 bg-primary-foreground/30" />
+      {/* Subtitle */}
+      <p 
+        className="mt-10 text-[10px] md:text-xs tracking-[0.4em] uppercase text-muted-foreground animate-fade-in"
+        style={{ animationDelay: '0.4s' }}
+      >
+        coffee shop · restaurant · terrasse
+      </p>
+
+      {/* Scroll Line */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
+        <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-muted-foreground/30 to-muted-foreground/50 animate-pulse" />
       </div>
     </section>
   );
