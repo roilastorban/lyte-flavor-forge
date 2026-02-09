@@ -1,101 +1,221 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShoppingBag, Globe } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 
 const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { openCart } = useCart();
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [bannerHeight, setBannerHeight] = useState(40); // Hauteur par défaut de la bannière
+  
+  const { openCart, itemCount } = useCart();
   const location = useLocation();
 
+  // Observer la hauteur de la bannière
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    const updateBannerHeight = () => {
+      const banner = document.querySelector('.top-banner');
+      if (banner) {
+        const height = banner.clientHeight;
+        setBannerHeight(height > 0 ? height : 0);
+      }
+    };
+
+    // Initial update
+    updateBannerHeight();
+    
+    // Observer les changements de la bannière
+    const observer = new MutationObserver(updateBannerHeight);
+    const bannerElement = document.querySelector('.top-banner');
+    if (bannerElement) {
+      observer.observe(bannerElement, { 
+        attributes: true, 
+        attributeFilter: ['class', 'style'] 
+      });
+    }
+
+    // Mettre à jour périodiquement (fallback)
+    const interval = setInterval(updateBannerHeight, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearInterval(interval);
+    };
   }, []);
 
-  useEffect(() => setMobileOpen(false), [location]);
+  // Gestion du scroll pour cacher/montrer le header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Changer l'apparence quand on scroll
+      setIsScrolled(currentScrollY > 20);
+      
+      // Cacher/montrer le header selon la direction du scroll
+      if (currentScrollY < 100) {
+        setIsHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scroll vers le bas - cacher
+        setIsHeaderVisible(false);
+      } else {
+        // Scroll vers le haut - montrer
+        setIsHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Fermer le menu mobile quand on change de page
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
+
+  // Calculer la position du header dynamiquement
+  const headerStyle = {
+    top: `${bannerHeight}px`,
+    transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
+  };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-background/90 backdrop-blur-md' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="flex items-center justify-between h-20 md:h-24">
-          {/* Logo - Left */}
-          <Link to="/" className="group">
-            <span className="font-script text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors">
-              lyte food
-            </span>
-          </Link>
+    <>
+      {/* Header principal - position dynamique basée sur la bannière */}
+      <header 
+        className="fixed left-0 right-0 z-30 transition-all duration-300 bg-background/95 backdrop-blur-md shadow-sm"
+        style={headerStyle}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            {/* Logo */}
+            <Link 
+              to="/" 
+              className="group flex items-center gap-2"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              <span className="font-script text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors">
+                lyte food
+              </span>
+              <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground hidden md:block">
+                • Paris
+              </span>
+            </Link>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-6 md:gap-8">
-            {/* Language */}
-            <button className="hidden md:block text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors">
-              FR / EN
-            </button>
+            {/* Navigation desktop */}
+            <nav className="hidden md:flex items-center gap-8">
+              <Link 
+                to="/carte" 
+                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
+              >
+                la carte
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+              </Link>
+              
+              <Link 
+                to="/espaces" 
+                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
+              >
+                nos espaces
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+              </Link>
+              
+              <Link 
+                to="/espaces#reservation" 
+                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
+              >
+                réserver
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
+              </Link>
+            </nav>
 
-            {/* Réserver Link */}
+            {/* Actions droite */}
+            <div className="flex items-center gap-4 md:gap-6">
+              {/* Langue */}
+              <button className="hidden md:flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+                <Globe size={16} />
+                FR
+              </button>
+
+              {/* Panier avec badge */}
+              <button 
+                onClick={openCart}
+                className="relative flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors group"
+              >
+                <div className="relative">
+                  <ShoppingBag size={20} />
+                  {itemCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
+                      {itemCount}
+                    </span>
+                  )}
+                </div>
+                <span className="hidden md:inline">panier</span>
+              </button>
+
+              {/* Bouton menu mobile */}
+              <button 
+                onClick={() => setMobileOpen(!mobileOpen)} 
+                className="md:hidden text-foreground hover:text-accent transition-colors"
+                aria-label="Menu"
+              >
+                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Menu mobile */}
+        <div 
+          className={`fixed inset-0 z-20 bg-background/95 backdrop-blur-md transition-all duration-300 md:hidden ${
+            mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          style={{ top: `calc(${bannerHeight}px + 4rem)` }}
+        >
+          <div className="flex flex-col items-center justify-center h-full gap-8 pt-16">
+            <Link 
+              to="/carte" 
+              onClick={() => setMobileOpen(false)}
+              className="font-display text-3xl text-foreground hover:text-accent transition-colors py-2"
+            >
+              la carte
+            </Link>
+            
             <Link 
               to="/espaces" 
-              className="hidden md:block text-xs tracking-[0.2em] uppercase text-foreground hover:text-accent transition-colors"
+              onClick={() => setMobileOpen(false)}
+              className="font-display text-3xl text-foreground hover:text-accent transition-colors py-2"
+            >
+              nos espaces
+            </Link>
+            
+            <Link 
+              to="/espaces#reservation" 
+              onClick={() => setMobileOpen(false)}
+              className="font-display text-3xl text-foreground hover:text-accent transition-colors py-2"
             >
               réserver
             </Link>
-
-            {/* Cart (subtle) */}
-            <button 
-              onClick={openCart}
-              className="text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
-            >
-              panier
-            </button>
-
-            {/* Mobile menu button */}
-            <button 
-              onClick={() => setMobileOpen(!mobileOpen)} 
-              className="text-foreground hover:text-accent transition-colors"
-              aria-label="Menu"
-            >
-              {mobileOpen ? <X size={24} strokeWidth={1} /> : <Menu size={24} strokeWidth={1} />}
-            </button>
+            
+            <div className="pt-8 border-t border-border w-48 text-center">
+              <button className="flex items-center justify-center gap-2 text-lg text-muted-foreground hover:text-foreground transition-colors">
+                <Globe size={20} />
+                Français / English
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Full-screen Mobile/Desktop Nav Overlay */}
-      <div className={`fixed inset-0 bg-background z-40 transition-all duration-500 ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="flex flex-col items-center justify-center h-full gap-8">
-          <Link 
-            to="/carte" 
-            onClick={() => setMobileOpen(false)}
-            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
-          >
-            la carte
-          </Link>
-          <Link 
-            to="/espaces" 
-            onClick={() => setMobileOpen(false)}
-            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
-          >
-            nos espaces
-          </Link>
-          <Link 
-            to="/espaces" 
-            onClick={() => setMobileOpen(false)}
-            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
-          >
-            réserver
-          </Link>
-          <button 
-            onClick={() => { openCart(); setMobileOpen(false); }}
-            className="font-display text-3xl md:text-4xl text-foreground hover:text-accent transition-colors"
-          >
-            panier
-          </button>
-        </div>
-      </div>
-    </header>
+      {/* Espace réservé pour éviter que le contenu passe sous le header */}
+      <div 
+        className="transition-all duration-300"
+        style={{ height: `calc(${bannerHeight}px + 4rem)` }}
+      />
+    </>
   );
 };
 
