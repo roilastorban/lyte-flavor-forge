@@ -78,7 +78,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-16 pt-6 border-t border-primary-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs opacity-40">© 2026 Lyte Food. Tous droits réservés.</p>
-          <p className="text-xs opacity-40">Mangez 5 fruits et légumes par jour 🍎</p>
+     
         </div>
       </div>
 
