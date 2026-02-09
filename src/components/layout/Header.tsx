@@ -13,7 +13,6 @@ const Header = () => {
   const { openCart, itemCount } = useCart();
   const location = useLocation();
 
-  // Observer la hauteur de la bannière
   useEffect(() => {
     const updateBannerHeight = () => {
       const banner = document.querySelector('.top-banner');
@@ -42,15 +41,12 @@ const Header = () => {
     };
   }, []);
 
-  // Gestion du scroll
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Changer l'apparence quand on scroll
       setIsScrolled(currentScrollY > 20);
       
-      // Cacher/montrer le header selon la direction du scroll
       if (currentScrollY < 100) {
         setIsHeaderVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -70,7 +66,6 @@ const Header = () => {
     setMobileOpen(false);
   }, [location]);
 
-  // Style dynamique pour le header
   const headerStyle = {
     top: `${bannerHeight}px`,
     transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
@@ -78,40 +73,32 @@ const Header = () => {
 
   return (
     <>
-      {/* Header principal - transparent quand pas scrollé */}
+      {/* Header complètement transparent */}
       <header 
         className="fixed left-0 right-0 z-30 transition-all duration-300"
         style={headerStyle}
       >
-        <div className={`max-w-7xl mx-auto px-6 md:px-10 transition-all duration-300 ${
-          isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-4'
-        }`}>
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo - change de couleur selon scroll */}
+            {/* Logo en couleur marron */}
             <Link 
               to="/" 
               className="group flex items-center gap-2"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              <span className={`font-script text-2xl md:text-3xl transition-colors ${
-                isScrolled ? 'text-foreground group-hover:text-accent' : 'text-white group-hover:text-accent drop-shadow-lg'
-              }`}>
+              <span className="font-script text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors">
                 lyte food
               </span>
-              <span className={`text-[10px] tracking-[0.3em] uppercase transition-colors ${
-                isScrolled ? 'text-muted-foreground' : 'text-white/80'
-              } hidden md:block`}>
+              <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground hidden md:block">
                 • Paris
               </span>
             </Link>
 
-            {/* Navigation desktop */}
+            {/* Navigation desktop - en couleur marron */}
             <nav className="hidden md:flex items-center gap-8">
               <Link 
                 to="/carte" 
-                className={`text-sm tracking-[0.1em] uppercase transition-colors relative group ${
-                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
-                }`}
+                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
               >
                 la carte
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
@@ -119,9 +106,7 @@ const Header = () => {
               
               <Link 
                 to="/espaces" 
-                className={`text-sm tracking-[0.1em] uppercase transition-colors relative group ${
-                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
-                }`}
+                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
               >
                 nos espaces
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
@@ -129,21 +114,17 @@ const Header = () => {
               
               <Link 
                 to="/espaces#reservation" 
-                className={`text-sm tracking-[0.1em] uppercase transition-colors relative group ${
-                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
-                }`}
+                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
               >
                 réserver
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
               </Link>
             </nav>
 
-            {/* Actions droite */}
+            {/* Actions droite - en couleur marron */}
             <div className="flex items-center gap-4 md:gap-6">
               {/* Langue */}
-              <button className={`hidden md:flex items-center gap-2 text-sm tracking-[0.1em] uppercase transition-colors ${
-                isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
-              }`}>
+              <button className="hidden md:flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
                 <Globe size={16} />
                 FR
               </button>
@@ -151,9 +132,7 @@ const Header = () => {
               {/* Panier avec badge */}
               <button 
                 onClick={openCart}
-                className={`relative flex items-center gap-2 text-sm tracking-[0.1em] uppercase transition-colors group ${
-                  isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
-                }`}
+                className="relative flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors group"
               >
                 <div className="relative">
                   <ShoppingBag size={20} />
@@ -169,9 +148,7 @@ const Header = () => {
               {/* Bouton menu mobile */}
               <button 
                 onClick={() => setMobileOpen(!mobileOpen)} 
-                className={`md:hidden transition-colors ${
-                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
-                }`}
+                className="md:hidden text-foreground hover:text-accent transition-colors"
                 aria-label="Menu"
               >
                 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
