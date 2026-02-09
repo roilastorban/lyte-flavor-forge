@@ -8,7 +8,7 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [bannerHeight, setBannerHeight] = useState(40); // Hauteur par défaut de la bannière
+  const [bannerHeight, setBannerHeight] = useState(40);
   
   const { openCart, itemCount } = useCart();
   const location = useLocation();
@@ -23,10 +23,8 @@ const Header = () => {
       }
     };
 
-    // Initial update
     updateBannerHeight();
     
-    // Observer les changements de la bannière
     const observer = new MutationObserver(updateBannerHeight);
     const bannerElement = document.querySelector('.top-banner');
     if (bannerElement) {
@@ -36,7 +34,6 @@ const Header = () => {
       });
     }
 
-    // Mettre à jour périodiquement (fallback)
     const interval = setInterval(updateBannerHeight, 1000);
 
     return () => {
@@ -45,7 +42,7 @@ const Header = () => {
     };
   }, []);
 
-  // Gestion du scroll pour cacher/montrer le header
+  // Gestion du scroll
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -57,10 +54,8 @@ const Header = () => {
       if (currentScrollY < 100) {
         setIsHeaderVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scroll vers le bas - cacher
         setIsHeaderVisible(false);
       } else {
-        // Scroll vers le haut - montrer
         setIsHeaderVisible(true);
       }
       
@@ -71,12 +66,11 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Fermer le menu mobile quand on change de page
   useEffect(() => {
     setMobileOpen(false);
   }, [location]);
 
-  // Calculer la position du header dynamiquement
+  // Style dynamique pour le header
   const headerStyle = {
     top: `${bannerHeight}px`,
     transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
@@ -84,23 +78,29 @@ const Header = () => {
 
   return (
     <>
-      {/* Header principal - position dynamique basée sur la bannière */}
+      {/* Header principal - transparent quand pas scrollé */}
       <header 
-        className="fixed left-0 right-0 z-30 transition-all duration-300 bg-background/95 backdrop-blur-md shadow-sm"
+        className="fixed left-0 right-0 z-30 transition-all duration-300"
         style={headerStyle}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className={`max-w-7xl mx-auto px-6 md:px-10 transition-all duration-300 ${
+          isScrolled ? 'bg-background/95 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-4'
+        }`}>
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
+            {/* Logo - change de couleur selon scroll */}
             <Link 
               to="/" 
               className="group flex items-center gap-2"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
-              <span className="font-script text-2xl md:text-3xl text-foreground group-hover:text-accent transition-colors">
+              <span className={`font-script text-2xl md:text-3xl transition-colors ${
+                isScrolled ? 'text-foreground group-hover:text-accent' : 'text-white group-hover:text-accent drop-shadow-lg'
+              }`}>
                 lyte food
               </span>
-              <span className="text-[10px] tracking-[0.3em] uppercase text-muted-foreground hidden md:block">
+              <span className={`text-[10px] tracking-[0.3em] uppercase transition-colors ${
+                isScrolled ? 'text-muted-foreground' : 'text-white/80'
+              } hidden md:block`}>
                 • Paris
               </span>
             </Link>
@@ -109,7 +109,9 @@ const Header = () => {
             <nav className="hidden md:flex items-center gap-8">
               <Link 
                 to="/carte" 
-                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
+                className={`text-sm tracking-[0.1em] uppercase transition-colors relative group ${
+                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
+                }`}
               >
                 la carte
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
@@ -117,7 +119,9 @@ const Header = () => {
               
               <Link 
                 to="/espaces" 
-                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
+                className={`text-sm tracking-[0.1em] uppercase transition-colors relative group ${
+                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
+                }`}
               >
                 nos espaces
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
@@ -125,7 +129,9 @@ const Header = () => {
               
               <Link 
                 to="/espaces#reservation" 
-                className="text-sm tracking-[0.1em] uppercase text-foreground hover:text-accent transition-colors relative group"
+                className={`text-sm tracking-[0.1em] uppercase transition-colors relative group ${
+                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
+                }`}
               >
                 réserver
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300" />
@@ -135,7 +141,9 @@ const Header = () => {
             {/* Actions droite */}
             <div className="flex items-center gap-4 md:gap-6">
               {/* Langue */}
-              <button className="hidden md:flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors">
+              <button className={`hidden md:flex items-center gap-2 text-sm tracking-[0.1em] uppercase transition-colors ${
+                isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
+              }`}>
                 <Globe size={16} />
                 FR
               </button>
@@ -143,7 +151,9 @@ const Header = () => {
               {/* Panier avec badge */}
               <button 
                 onClick={openCart}
-                className="relative flex items-center gap-2 text-sm tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors group"
+                className={`relative flex items-center gap-2 text-sm tracking-[0.1em] uppercase transition-colors group ${
+                  isScrolled ? 'text-muted-foreground hover:text-foreground' : 'text-white/80 hover:text-white'
+                }`}
               >
                 <div className="relative">
                   <ShoppingBag size={20} />
@@ -159,7 +169,9 @@ const Header = () => {
               {/* Bouton menu mobile */}
               <button 
                 onClick={() => setMobileOpen(!mobileOpen)} 
-                className="md:hidden text-foreground hover:text-accent transition-colors"
+                className={`md:hidden transition-colors ${
+                  isScrolled ? 'text-foreground hover:text-accent' : 'text-white hover:text-accent'
+                }`}
                 aria-label="Menu"
               >
                 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -210,7 +222,7 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Espace réservé pour éviter que le contenu passe sous le header */}
+      {/* Espace réservé */}
       <div 
         className="transition-all duration-300"
         style={{ height: `calc(${bannerHeight}px + 4rem)` }}
