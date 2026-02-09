@@ -9,6 +9,8 @@ import PartnersSection from '@/components/home/PartnersSection';
 const Index = () => {
   return (
     <main>
+      {/* PAS de div de compensation ici - c'est géré dans Header.tsx */}
+      
       <HeroSection />
       <EditorialSection />
       <TimelineSection />
