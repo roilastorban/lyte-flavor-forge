@@ -18,13 +18,16 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden hero-gradient">
+      {/* Dégradé foncé en haut pour améliorer la lisibilité du texte transparent */}
+      <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black/20 to-transparent z-0 pointer-events-none" />
+      
       {/* Local Time */}
-      <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-muted-foreground mb-8 animate-fade-in">
+      <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-white/90 mb-8 animate-fade-in z-10">
         heure locale à lyte: {time}
       </p>
 
       {/* Central Image with Logo Overlay */}
-      <div className="relative w-[280px] md:w-[320px] lg:w-[360px] animate-fade-in" style={{ animationDelay: '0.2s' }}>
+      <div className="relative w-[280px] md:w-[320px] lg:w-[360px] animate-fade-in z-10" style={{ animationDelay: '0.2s' }}>
         <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-2xl">
           <img 
             src={heroImage} 
@@ -42,15 +45,15 @@ const HeroSection = () => {
 
       {/* Subtitle */}
       <p 
-        className="mt-10 text-[10px] md:text-xs tracking-[0.4em] uppercase text-muted-foreground animate-fade-in"
+        className="mt-10 text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/90 animate-fade-in z-10"
         style={{ animationDelay: '0.4s' }}
       >
         coffee shop · restaurant · terrasse
       </p>
 
       {/* Scroll Line */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-        <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-muted-foreground/30 to-muted-foreground/50 animate-pulse" />
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+        <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/30 to-white/50 animate-pulse" />
       </div>
     </section>
   );
