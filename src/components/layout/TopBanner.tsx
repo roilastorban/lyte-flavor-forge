@@ -7,13 +7,10 @@ const TopBanner = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Quand on scroll un peu, on cache la bannière
       if (window.scrollY > 50 && isVisible) {
         setIsVisible(false);
         setHasScrolled(true);
-      }
-      // Si on remonte tout en haut, on réaffiche la bannière
-      else if (window.scrollY === 0 && hasScrolled) {
+      } else if (window.scrollY === 0 && hasScrolled) {
         setIsVisible(true);
         setHasScrolled(false);
       }
@@ -35,24 +32,22 @@ const TopBanner = () => {
       }`}
       style={{ height: '2.5rem' }}
     >
-      <div className="w-full h-full">
-        {/* Supprimé: bg-gradient-to-r from-accent/90 to-accent */}
-        <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-center">
-          <div className="flex items-center gap-3">
-            <Truck size={16} className="text-foreground animate-pulse" />
-            <span className="text-sm font-medium tracking-wide text-foreground">
-              🚚 Livraison gratuite à partir de 25€ • Commandez avant 14h pour une livraison le jour même
-            </span>
-          </div>
-          
-          <button 
-            onClick={handleClose}
-            className="absolute right-4 text-foreground/80 hover:text-foreground transition-colors"
-            aria-label="Fermer la bannière"
-          >
-            <X size={18} />
-          </button>
+      {/* Conteneur qui garantit une seule ligne */}
+      <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between overflow-hidden">
+        <div className="flex items-center gap-3 overflow-hidden flex-1">
+          <Truck size={16} className="text-foreground animate-pulse flex-shrink-0" />
+          <span className="text-sm font-medium tracking-wide text-foreground whitespace-nowrap overflow-hidden text-ellipsis">
+            🚚 Livraison gratuite à partir de 25€ • Commandez avant 14h pour une livraison le jour même
+          </span>
         </div>
+        
+        <button 
+          onClick={handleClose}
+          className="text-foreground/80 hover:text-foreground transition-colors flex-shrink-0 ml-4"
+          aria-label="Fermer la bannière"
+        >
+          <X size={18} />
+        </button>
       </div>
     </div>
   );
