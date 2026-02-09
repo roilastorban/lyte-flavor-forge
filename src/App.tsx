@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
+import TopBanner from "@/components/layout/TopBanner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -23,8 +24,16 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          {/* Bannière en haut qui disparaît au scroll */}
+          <TopBanner />
+          
+          {/* Header qui reste fixe et remonte quand la bannière disparaît */}
           <Header />
+          
+          {/* Drawer pour le panier */}
           <CartDrawer />
+          
+          {/* Contenu principal */}
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/carte" element={<MenuPage />} />
@@ -33,6 +42,8 @@ const App = () => (
             <Route path="/success" element={<SuccessPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          
+          {/* Footer */}
           <Footer />
         </BrowserRouter>
       </CartProvider>
