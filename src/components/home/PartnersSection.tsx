@@ -11,7 +11,7 @@ const PartnersSection = () => {
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-30">
             <span className="text-2xl font-display">Gozem</span>
             <span className="text-2xl font-display">UberEats</span>
-            <span className="text-lg font-body">🍎 5 fruits/jour</span>
+            <span className="text-2xl font-display">Yango</span>
             <span className="text-2xl font-display">Café Local</span>
           </div>
         </ScrollReveal>
