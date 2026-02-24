@@ -75,7 +75,7 @@ const Header = () => {
     <>
       {/* Header complètement transparent */}
       <header 
-        className="fixed left-0 right-0 z-30 transition-all duration-300"
+        className="fixed left-0 right-0 z-30 transition-all duration-300 bg-transparent"
         style={headerStyle}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -199,11 +199,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Espace réservé */}
-      <div 
-        className="transition-all duration-300"
-        style={{ height: `calc(${bannerHeight}px + 4rem)` }}
-      />
     </>
   );
 };
